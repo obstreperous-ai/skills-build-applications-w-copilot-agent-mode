@@ -53,24 +53,30 @@ const Activities = () => {
           </div>
         )}
         {!loading && !error && (
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Duration (min)</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {activities.map(activity => (
-                <tr key={activity.id}>
-                  <td>{activity.type}</td>
-                  <td>{activity.duration}</td>
-                  <td>{activity.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <>
+            {activities.length === 0 ? (
+              <p className="text-muted">No activities found.</p>
+            ) : (
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Duration (min)</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {activities.map(activity => (
+                    <tr key={activity.id}>
+                      <td>{activity.type}</td>
+                      <td>{activity.duration}</td>
+                      <td>{activity.date}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </>
         )}
       </div>
     </div>
