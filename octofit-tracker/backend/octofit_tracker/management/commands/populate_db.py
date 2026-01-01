@@ -6,16 +6,12 @@ class Command(BaseCommand):
     help = 'Populate the octofit_db database with test data'
 
     def handle(self, *args, **kwargs):
-        # Directly clear MongoDB collections to avoid orphaned/broken documents
-        from django.conf import settings
-        from pymongo import MongoClient
-        client = MongoClient(settings.DATABASES['default']['CLIENT']['host'])
-        db = client[settings.DATABASES['default']['NAME']]
-        db.activity.drop()
-        db.workout.drop()
-        db.leaderboard.drop()
-        db.user.drop()
-        db.team.drop()
+        # Clear existing data using Django ORM to maintain consistency
+        Activity.objects.all().delete()
+        Workout.objects.all().delete()
+        Leaderboard.objects.all().delete()
+        User.objects.all().delete()
+        Team.objects.all().delete()
 
         # Now proceed with Django ORM population
 
