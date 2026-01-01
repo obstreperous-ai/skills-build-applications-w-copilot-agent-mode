@@ -3,12 +3,21 @@ import React, { useEffect, useState } from 'react';
 const Activities = () => {
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   
   const apiUrl = process.env.REACT_APP_CODESPACE_NAME
     ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
     : 'http://localhost:8000/api/activities/';
 
   useEffect(() => {
+    // Construct API URL based on environment
+    const apiUrl = process.env.REACT_APP_CODESPACE_NAME
+      ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+      : 'http://localhost:8000/api/activities/';
+    
+    setLoading(true);
+    setError(null);
+    
     fetch(apiUrl)
       .then(res => {
         if (!res.ok) {
@@ -20,13 +29,14 @@ const Activities = () => {
         console.log('Activities API endpoint:', apiUrl);
         console.log('Fetched activities:', data);
         setActivities(data.results ? data.results : data);
-        setError(null);
+        setLoading(false);
       })
       .catch(err => {
         console.error('Error fetching activities:', err);
         setError(`Failed to load activities: ${err.message}`);
+        setLoading(false);
       });
-  }, [apiUrl]);
+  }, []);
 
   return (
     <div className="card mb-4">
@@ -34,29 +44,43 @@ const Activities = () => {
         <h2 className="card-title">Activities</h2>
       </div>
       <div className="card-body">
-        {error ? (
-          <div className="alert alert-danger" role="alert">
-            {error}
+        {loading && (
+          <div className="text-center">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
           </div>
-        ) : (
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Duration (min)</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {activities.map(activity => (
-                <tr key={activity.id}>
-                  <td>{activity.type}</td>
-                  <td>{activity.duration}</td>
-                  <td>{activity.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        )}
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            <strong>Error:</strong> {error}
+          </div>
+        )}
+        {!loading && !error && (
+          <>
+            {activities.length === 0 ? (
+              <p className="text-muted">No activities found.</p>
+            ) : (
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Duration (min)</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {activities.map(activity => (
+                    <tr key={activity.id}>
+                      <td>{activity.type}</td>
+                      <td>{activity.duration}</td>
+                      <td>{activity.date}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </>
         )}
       </div>
     </div>
