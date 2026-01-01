@@ -21,6 +21,7 @@ const Leaderboard = () => {
         console.log('Fetched leaderboards:', data);
         setLeaderboards(data.results ? data.results : data);
         setLoading(false);
+        setError(null);
       })
       .catch(err => {
         console.error('Error fetching leaderboards:', err);

@@ -8,6 +8,8 @@ const Activities = () => {
 
   useEffect(() => {
     const apiUrl = getApiUrl('activities/');
+    setLoading(true);
+    setError(null);
     
     fetch(apiUrl)
       .then(res => {
@@ -24,7 +26,7 @@ const Activities = () => {
       })
       .catch(err => {
         console.error('Error fetching activities:', err);
-        setError(err.message);
+        setError(`Failed to load activities: ${err.message}`);
         setLoading(false);
       });
   }, []);
