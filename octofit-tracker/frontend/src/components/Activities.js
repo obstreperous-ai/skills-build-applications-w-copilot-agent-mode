@@ -4,6 +4,10 @@ const Activities = () => {
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  const apiUrl = process.env.REACT_APP_CODESPACE_NAME
+    ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+    : 'http://localhost:8000/api/activities/';
 
   useEffect(() => {
     // Construct API URL based on environment
@@ -29,7 +33,7 @@ const Activities = () => {
       })
       .catch(err => {
         console.error('Error fetching activities:', err);
-        setError(err.message || 'Failed to fetch activities');
+        setError(`Failed to load activities: ${err.message}`);
         setLoading(false);
       });
   }, []);
