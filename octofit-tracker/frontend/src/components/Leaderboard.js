@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { getApiUrl } from '../utils/api';
 
 const Leaderboard = () => {
   const [leaderboards, setLeaderboards] = useState([]);
@@ -30,7 +31,7 @@ const Leaderboard = () => {
         setError(err.message);
         setLoading(false);
       });
-  }, [apiUrl]);
+  }, []);
 
   return (
     <div className="card mb-4">

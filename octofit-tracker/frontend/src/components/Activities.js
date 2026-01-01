@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { getApiUrl } from '../utils/api';
 
 const Activities = () => {
   const [activities, setActivities] = useState([]);
@@ -30,7 +31,7 @@ const Activities = () => {
         setError(err.message);
         setLoading(false);
       });
-  }, [apiUrl]);
+  }, []);
 
   return (
     <div className="card mb-4">

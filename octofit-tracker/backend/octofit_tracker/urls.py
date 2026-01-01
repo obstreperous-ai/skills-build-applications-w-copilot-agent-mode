@@ -20,7 +20,6 @@ from rest_framework.routers import DefaultRouter
 from .views import TeamViewSet, UserViewSet, ActivityViewSet, WorkoutViewSet, LeaderboardViewSet
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.reverse import reverse
 import os
 
 @api_view(['GET'])
