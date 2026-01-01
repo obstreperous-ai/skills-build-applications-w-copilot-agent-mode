@@ -1,4 +1,5 @@
 from djongo import models
+from django.core.validators import MinValueValidator
 
 class Team(models.Model):
     id = models.ObjectIdField(primary_key=True, editable=False)
@@ -40,7 +41,7 @@ class Workout(models.Model):
 class Leaderboard(models.Model):
     id = models.ObjectIdField(primary_key=True, editable=False)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='leaderboards', db_column='team_id', to_field='id')
-    points = models.IntegerField(default=0)
+    points = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     
     def __str__(self):
         return f"{self.team.name} - {self.points} pts"
