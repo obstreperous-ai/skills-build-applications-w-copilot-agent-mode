@@ -20,5 +20,7 @@ export const getApiBaseUrl = () => {
  */
 export const getApiUrl = (endpoint) => {
   const baseUrl = getApiBaseUrl();
-  return `${baseUrl}/${endpoint}`;
+  // Remove any leading slashes from endpoint to avoid double slashes
+  const cleanEndpoint = endpoint.replace(/^\/+/, '');
+  return `${baseUrl}/${cleanEndpoint}`;
 };
