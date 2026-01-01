@@ -4,13 +4,13 @@ const Activities = () => {
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  
-  // Construct API URL based on environment
-  const apiUrl = process.env.REACT_APP_CODESPACE_NAME
-    ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
-    : 'http://localhost:8000/api/activities/';
 
   useEffect(() => {
+    // Construct API URL based on environment
+    const apiUrl = process.env.REACT_APP_CODESPACE_NAME
+      ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+      : 'http://localhost:8000/api/activities/';
+    
     setLoading(true);
     setError(null);
     
@@ -32,7 +32,7 @@ const Activities = () => {
         setError(err.message || 'Failed to fetch activities');
         setLoading(false);
       });
-  }, [apiUrl]);
+  }, []);
 
   return (
     <div className="card mb-4">
