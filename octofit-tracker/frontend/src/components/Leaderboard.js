@@ -5,10 +5,14 @@ const Leaderboard = () => {
   const [leaderboards, setLeaderboards] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  const apiUrl = process.env.REACT_APP_CODESPACE_NAME
+    ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/leaderboards/`
+    : 'http://localhost:8000/api/leaderboards/';
 
   useEffect(() => {
-    const apiUrl = getApiUrl('leaderboards/');
-    
+    setLoading(true);
+    setError(null);
     fetch(apiUrl)
       .then(res => {
         if (!res.ok) {
@@ -21,7 +25,6 @@ const Leaderboard = () => {
         console.log('Fetched leaderboards:', data);
         setLeaderboards(data.results ? data.results : data);
         setLoading(false);
-        setError(null);
       })
       .catch(err => {
         console.error('Error fetching leaderboards:', err);
@@ -36,14 +39,8 @@ const Leaderboard = () => {
         <h2 className="card-title">Leaderboard</h2>
       </div>
       <div className="card-body">
-        {loading && (
-          <div className="alert alert-info">Loading leaderboard...</div>
-        )}
-        {error && (
-          <div className="alert alert-danger">
-            <strong>Error:</strong> Failed to load leaderboard. {error}
-          </div>
-        )}
+        {loading && <div className="alert alert-info">Loading leaderboard...</div>}
+        {error && <div className="alert alert-danger">Error loading leaderboard: {error}</div>}
         {!loading && !error && (
           <table className="table table-striped">
             <thead>

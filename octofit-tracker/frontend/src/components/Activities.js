@@ -5,12 +5,14 @@ const Activities = () => {
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  const apiUrl = process.env.REACT_APP_CODESPACE_NAME
+    ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+    : 'http://localhost:8000/api/activities/';
 
   useEffect(() => {
-    const apiUrl = getApiUrl('activities/');
     setLoading(true);
     setError(null);
-    
     fetch(apiUrl)
       .then(res => {
         if (!res.ok) {
@@ -26,7 +28,7 @@ const Activities = () => {
       })
       .catch(err => {
         console.error('Error fetching activities:', err);
-        setError(`Failed to load activities: ${err.message}`);
+        setError(err.message);
         setLoading(false);
       });
   }, []);
@@ -37,14 +39,8 @@ const Activities = () => {
         <h2 className="card-title">Activities</h2>
       </div>
       <div className="card-body">
-        {loading && (
-          <div className="alert alert-info">Loading activities...</div>
-        )}
-        {error && (
-          <div className="alert alert-danger">
-            <strong>Error:</strong> Failed to load activities. {error}
-          </div>
-        )}
+        {loading && <div className="alert alert-info">Loading activities...</div>}
+        {error && <div className="alert alert-danger">Error loading activities: {error}</div>}
         {!loading && !error && (
           <table className="table table-striped">
             <thead>

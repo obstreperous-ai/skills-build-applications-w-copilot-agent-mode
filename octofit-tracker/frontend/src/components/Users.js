@@ -5,10 +5,14 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  const apiUrl = process.env.REACT_APP_CODESPACE_NAME
+    ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+    : 'http://localhost:8000/api/users/';
 
   useEffect(() => {
-    const apiUrl = getApiUrl('users/');
-    
+    setLoading(true);
+    setError(null);
     fetch(apiUrl)
       .then(res => {
         if (!res.ok) {
@@ -35,14 +39,8 @@ const Users = () => {
         <h2 className="card-title">Users</h2>
       </div>
       <div className="card-body">
-        {loading && (
-          <div className="alert alert-info">Loading users...</div>
-        )}
-        {error && (
-          <div className="alert alert-danger">
-            <strong>Error:</strong> Failed to load users. {error}
-          </div>
-        )}
+        {loading && <div className="alert alert-info">Loading users...</div>}
+        {error && <div className="alert alert-danger">Error loading users: {error}</div>}
         {!loading && !error && (
           <table className="table table-striped">
             <thead>

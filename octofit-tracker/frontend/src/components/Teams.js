@@ -5,10 +5,14 @@ const Teams = () => {
   const [teams, setTeams] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  const apiUrl = process.env.REACT_APP_CODESPACE_NAME
+    ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/teams/`
+    : 'http://localhost:8000/api/teams/';
 
   useEffect(() => {
-    const apiUrl = getApiUrl('teams/');
-    
+    setLoading(true);
+    setError(null);
     fetch(apiUrl)
       .then(res => {
         if (!res.ok) {
@@ -35,14 +39,8 @@ const Teams = () => {
         <h2 className="card-title">Teams</h2>
       </div>
       <div className="card-body">
-        {loading && (
-          <div className="alert alert-info">Loading teams...</div>
-        )}
-        {error && (
-          <div className="alert alert-danger">
-            <strong>Error:</strong> Failed to load teams. {error}
-          </div>
-        )}
+        {loading && <div className="alert alert-info">Loading teams...</div>}
+        {error && <div className="alert alert-danger">Error loading teams: {error}</div>}
         {!loading && !error && (
           <table className="table table-striped">
             <thead>

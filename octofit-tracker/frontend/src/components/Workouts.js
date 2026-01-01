@@ -5,10 +5,14 @@ const Workouts = () => {
   const [workouts, setWorkouts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  const apiUrl = process.env.REACT_APP_CODESPACE_NAME
+    ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
+    : 'http://localhost:8000/api/workouts/';
 
   useEffect(() => {
-    const apiUrl = getApiUrl('workouts/');
-    
+    setLoading(true);
+    setError(null);
     fetch(apiUrl)
       .then(res => {
         if (!res.ok) {
@@ -35,14 +39,8 @@ const Workouts = () => {
         <h2 className="card-title">Workouts</h2>
       </div>
       <div className="card-body">
-        {loading && (
-          <div className="alert alert-info">Loading workouts...</div>
-        )}
-        {error && (
-          <div className="alert alert-danger">
-            <strong>Error:</strong> Failed to load workouts. {error}
-          </div>
-        )}
+        {loading && <div className="alert alert-info">Loading workouts...</div>}
+        {error && <div className="alert alert-danger">Error loading workouts: {error}</div>}
         {!loading && !error && (
           <table className="table table-striped">
             <thead>
