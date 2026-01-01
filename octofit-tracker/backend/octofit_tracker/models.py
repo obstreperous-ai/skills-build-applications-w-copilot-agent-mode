@@ -29,7 +29,7 @@ def validate_email_domain(value):
         raise ValidationError('Email domain must include a valid top-level domain')
     
     # Check for suspicious patterns (multiple dots in a row, special characters)
-    if '..' in domain or re.search(r'[^\w\.\-]', domain):
+    if '..' in domain or re.search(r'[^\w.\-]', domain):
         raise ValidationError('Email domain contains invalid characters')
     
     # Ensure domain parts are not empty
@@ -78,7 +78,7 @@ class User(models.Model):
                 raise ValidationError({'email': 'Email local part is too long'})
             
             # Check for suspicious consecutive special characters
-            if re.search(r'[\.\_\-]{2,}', local_part):
+            if re.search(r'[._\-]{2,}', local_part):
                 raise ValidationError({'email': 'Email contains suspicious character patterns'})
     
     def save(self, *args, **kwargs):
