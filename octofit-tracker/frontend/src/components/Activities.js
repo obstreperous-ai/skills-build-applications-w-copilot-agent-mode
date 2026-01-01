@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { getApiUrl } from '../utils/api';
 
 const Activities = () => {
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  
-  const apiUrl = process.env.REACT_APP_CODESPACE_NAME
-    ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
-    : 'http://localhost:8000/api/activities/';
 
   useEffect(() => {
-    // Construct API URL based on environment
-    const apiUrl = process.env.REACT_APP_CODESPACE_NAME
-      ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
-      : 'http://localhost:8000/api/activities/';
-    
+    const apiUrl = getApiUrl('activities/');
     setLoading(true);
     setError(null);
     
@@ -45,42 +38,32 @@ const Activities = () => {
       </div>
       <div className="card-body">
         {loading && (
-          <div className="text-center">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
+          <div className="alert alert-info">Loading activities...</div>
         )}
         {error && (
-          <div className="alert alert-danger" role="alert">
-            <strong>Error:</strong> {error}
+          <div className="alert alert-danger">
+            <strong>Error:</strong> Failed to load activities. {error}
           </div>
         )}
         {!loading && !error && (
-          <>
-            {activities.length === 0 ? (
-              <p className="text-muted">No activities found.</p>
-            ) : (
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Duration (min)</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {activities.map(activity => (
-                    <tr key={activity.id}>
-                      <td>{activity.type}</td>
-                      <td>{activity.duration}</td>
-                      <td>{activity.date}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </>
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Duration (min)</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activities.map(activity => (
+                <tr key={activity.id}>
+                  <td>{activity.type}</td>
+                  <td>{activity.duration}</td>
+                  <td>{activity.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
     </div>

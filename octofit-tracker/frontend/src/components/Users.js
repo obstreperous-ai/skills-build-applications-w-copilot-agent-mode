@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { getApiUrl } from '../utils/api';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
-  
-  const apiUrl = process.env.REACT_APP_CODESPACE_NAME
-    ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/users/`
-    : 'http://localhost:8000/api/users/';
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const apiUrl = getApiUrl('users/');
+    
     fetch(apiUrl)
       .then(res => {
         if (!res.ok) {
@@ -20,13 +20,14 @@ const Users = () => {
         console.log('Users API endpoint:', apiUrl);
         console.log('Fetched users:', data);
         setUsers(data.results ? data.results : data);
-        setError(null);
+        setLoading(false);
       })
       .catch(err => {
         console.error('Error fetching users:', err);
-        setError(`Failed to load users: ${err.message}`);
+        setError(err.message);
+        setLoading(false);
       });
-  }, [apiUrl]);
+  }, []);
 
   return (
     <div className="card mb-4">
@@ -34,11 +35,15 @@ const Users = () => {
         <h2 className="card-title">Users</h2>
       </div>
       <div className="card-body">
-        {error ? (
-          <div className="alert alert-danger" role="alert">
-            {error}
+        {loading && (
+          <div className="alert alert-info">Loading users...</div>
+        )}
+        {error && (
+          <div className="alert alert-danger">
+            <strong>Error:</strong> Failed to load users. {error}
           </div>
-        ) : (
+        )}
+        {!loading && !error && (
           <table className="table table-striped">
             <thead>
               <tr>

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { getApiUrl } from '../utils/api';
 
 const Workouts = () => {
   const [workouts, setWorkouts] = useState([]);
   const [error, setError] = useState(null);
-  
-  const apiUrl = process.env.REACT_APP_CODESPACE_NAME
-    ? `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
-    : 'http://localhost:8000/api/workouts/';
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const apiUrl = getApiUrl('workouts/');
+    
     fetch(apiUrl)
       .then(res => {
         if (!res.ok) {
@@ -20,13 +20,14 @@ const Workouts = () => {
         console.log('Workouts API endpoint:', apiUrl);
         console.log('Fetched workouts:', data);
         setWorkouts(data.results ? data.results : data);
-        setError(null);
+        setLoading(false);
       })
       .catch(err => {
         console.error('Error fetching workouts:', err);
-        setError(`Failed to load workouts: ${err.message}`);
+        setError(err.message);
+        setLoading(false);
       });
-  }, [apiUrl]);
+  }, []);
 
   return (
     <div className="card mb-4">
@@ -34,11 +35,15 @@ const Workouts = () => {
         <h2 className="card-title">Workouts</h2>
       </div>
       <div className="card-body">
-        {error ? (
-          <div className="alert alert-danger" role="alert">
-            {error}
+        {loading && (
+          <div className="alert alert-info">Loading workouts...</div>
+        )}
+        {error && (
+          <div className="alert alert-danger">
+            <strong>Error:</strong> Failed to load workouts. {error}
           </div>
-        ) : (
+        )}
+        {!loading && !error && (
           <table className="table table-striped">
             <thead>
               <tr>
