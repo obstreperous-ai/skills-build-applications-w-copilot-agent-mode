@@ -1,0 +1,106 @@
+
+.App {
+  text-align: center;
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+  min-height: 100vh;
+  color: #22223b;
+}
+
+.App-logo {
+  height: 60px;
+  margin-right: 16px;
+  vertical-align: middle;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background: linear-gradient(90deg, #3a86ff 0%, #8338ec 100%);
+  min-height: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: calc(12px + 2vmin);
+  color: #fff;
+  padding: 16px 32px;
+}
+
+.App-link {
+  color: #ff006e;
+  font-weight: bold;
+  text-decoration: underline;
+}
+/* Table styling */
+table.table {
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+table.table th {
+  background: #3a86ff;
+  color: #fff;
+}
+table.table td {
+  color: #22223b;
+}
+
+/* Button styling */
+.btn {
+  background: #ffbe0b;
+  color: #22223b;
+  border: none;
+  font-weight: 600;
+}
+.btn:hover {
+  background: #fb5607;
+  color: #fff;
+}
+
+/* Heading styling */
+.card-title, h1, h2, h3, h4 {
+  color: #3a86ff;
+  font-weight: 700;
+}
+
+/* Navigation styling */
+.navbar {
+  background: linear-gradient(90deg, #3a86ff 0%, #8338ec 100%) !important;
+}
+.navbar-brand {
+  color: #fff !important;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.nav-link {
+  color: #ffbe0b !important;
+  font-weight: 600;
+}
+.nav-link:hover {
+  color: #fb5607 !important;
+}
+
+/* Card styling */
+.card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-radius: 12px;
+}
+
+/* Modal styling */
+.modal-content {
+  border-radius: 16px;
+  background: #f8f9fa;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
