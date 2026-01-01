@@ -1,6 +1,7 @@
 from djongo import models
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 import re
 
 def validate_email_domain(value):
@@ -93,7 +94,7 @@ class Activity(models.Model):
     id = models.ObjectIdField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='activities', db_column='user_id', to_field='id')
     type = models.CharField(max_length=100)
-    duration = models.IntegerField()  # in minutes
+    duration = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(1440)])  # in minutes (max 24 hours)
     date = models.DateField()
     
     def __str__(self):
@@ -111,7 +112,7 @@ class Workout(models.Model):
 class Leaderboard(models.Model):
     id = models.ObjectIdField(primary_key=True, editable=False)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='leaderboards', db_column='team_id', to_field='id')
-    points = models.IntegerField(default=0)
+    points = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     
     def __str__(self):
         return f"{self.team.name} - {self.points} pts"
